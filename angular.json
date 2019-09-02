@@ -142,6 +142,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "nuggets-ngrx2"
+    }
+  },
+  "defaultProject": "nuggets-ngrx2",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

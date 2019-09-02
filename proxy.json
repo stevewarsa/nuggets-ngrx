@@ -1,0 +1,8 @@
+{
+    "/bible/api/*": {
+        "target": "http://ps11911.com",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    }
+}
