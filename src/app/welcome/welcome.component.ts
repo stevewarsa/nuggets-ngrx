@@ -10,16 +10,8 @@ import { loadNuggetIds } from '../reducers/bible.actions';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-  nuggetIds$: Observable<number[]>;
-
-  constructor(private store:Store<State>) { }
+  constructor() { }
 
   ngOnInit() {
-    this.store.subscribe(x => {
-      console.log("WelcomeComponent - Here is the current state: ");
-      console.log(x);
-    });
-    this.nuggetIds$ = this.store.select(selectNuggetIds);
   }
-
 }
