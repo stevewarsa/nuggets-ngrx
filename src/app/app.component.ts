@@ -9,14 +9,5 @@ import { Observable } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  constructor(private store:Store<State>) {}
-
-  ngOnInit(): void {
-    this.store.subscribe(x => {
-      console.log("AppComponent - Here is the current state: ");
-      console.log(x);
-    });
-    this.store.dispatch(loadNuggetIds());
-  }
+export class AppComponent {
 }

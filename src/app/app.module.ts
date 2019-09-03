@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { BrowseBibleNuggetsComponent } from './browse-bible-nuggets/browse-bible-nuggets.component';
 
 @NgModule({
@@ -38,6 +39,7 @@ import { BrowseBibleNuggetsComponent } from './browse-bible-nuggets/browse-bible
     MatListModule,
     MatButtonModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {

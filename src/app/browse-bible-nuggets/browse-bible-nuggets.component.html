@@ -1,4 +1,7 @@
 There are {{nuggetIdCount$ | async}} nuggetIds.
-<ol *ngIf="nuggetIds$ | async as nuggetIds">
+<ol *ngIf="nuggetIds$ | async as nuggetIds; else loading">
     <li *ngFor="let nuggetId of nuggetIds">{{nuggetId}}</li>
 </ol>
+<ng-template #loading>
+    <mat-spinner></mat-spinner>
+</ng-template>

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State, selectNuggetIds } from '../reducers';
 import { map } from 'rxjs/operators';
+import { loadNuggetIds } from '../reducers/bible.actions';
 
 @Component({
   selector: 'nuggets-browse-bible-nuggets',
@@ -20,6 +21,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
       console.log("BrowseBibleNuggetsComponent - Here is the current state: ");
       console.log(x);
     });
+    this.store.dispatch(loadNuggetIds());
     this.nuggetIds$ = this.store.select(selectNuggetIds);
     this.nuggetIdCount$ = this.nuggetIds$.pipe(
       map(nuggetIds => nuggetIds ? nuggetIds.length : 0)
