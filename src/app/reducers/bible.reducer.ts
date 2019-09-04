@@ -1,4 +1,4 @@
-import { loadNuggetIds, loadNuggetIdsSuccess } from './bible.actions';
+import { loadNuggetIdsSuccess } from './bible.actions';
 import { createReducer, State, on } from '@ngrx/store';
 
 export interface BibleState {
