@@ -11,6 +11,5 @@ const initialState: BibleState = {
 
 export const bibleReducer = createReducer(
     initialState,
-    on(loadNuggetIds, state => ({...state, nuggetIds: undefined})),
     on(loadNuggetIdsSuccess, (state, action) => ({...state, nuggetIds: action.nuggetIds}))
 );

@@ -17,7 +17,7 @@ export class AppEffects {
   getBibleNuggetIds = createEffect(() => this.actions$.pipe(
     ofType(loadNuggetIds),
     withLatestFrom(this.store.select(selectNuggetIds)),
-    //filter(([{payload}, orders]) => !!orders[payload.orderId]),
+    filter(([action, nuggetIds]) => nuggetIds.length === 0),
     switchMap(action => this.bibleService.getNuggetIdList()),
     map(nuggetIds => loadNuggetIdsSuccess({nuggetIds: nuggetIds}))
   ));
