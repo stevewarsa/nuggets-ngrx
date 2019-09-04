@@ -1,5 +1,5 @@
-There are {{nuggetIdCount$ | async}} nuggetIds.
-<ol *ngIf="nuggetIds$ | async as nuggetIds; else loading">
+There are {{nuggetIds.length}} nuggetIds.
+<ol *ngIf="nuggetIds && nuggetIds.length; else loading">
     <li *ngFor="let nuggetId of nuggetIds">{{nuggetId}}</li>
 </ol>
 <ng-template #loading>
