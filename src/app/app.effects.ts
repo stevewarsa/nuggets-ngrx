@@ -1,3 +1,4 @@
+import { PassageUtils } from './model/passage-utils';
 import { Constants } from './model/constants';
 import { BibleService } from './services/bible.service';
 import { Injectable } from '@angular/core';
@@ -32,28 +33,23 @@ export class AppEffects {
     withLatestFrom(this.store.select(selectBiblePassageMap)),
     tap(val => console.log(val)),
     map(([action, biblePassageMap]) => ({passage: action.payload, cache: biblePassageMap})),
-    tap(val => console.log(val)),
     switchMap(val => {
-      // Note - I expect the payload here to be a passage reference (e.g. 'john 3:16-18')
-      // if (val.cache.hasOwnProperty(val.action.payload)) {
-      //   return of(loadNuggetTextSuccess({passage: val.cache[val.action.payload]}));
-      // } else {
-      //   return this.bibleService.getPassage(null).pipe(
-      //     tap(psg => val.cache[val.action.payload] = psg),
-      //     map(psg =>
-      //       loadNuggetTextSuccess({passage: psg})
-      //     ),
-      //     catchError(_err => EMPTY)
-      //   );
-      // }
-      //return of(loadNuggetTextSuccess({passage: new Passage()}));
-      return this.bibleService.getPassage(val.passage).pipe(
-        //tap(psg => val.cache[val.action.payload] = psg),
-        map(psg =>
-          loadNuggetTextSuccess({passage: psg})
-        ),
-        catchError(_err => EMPTY)
-      );
+      let passageString: string = PassageUtils.getPassageStringNoIndex(val.passage);
+      console.log(passageString);
+      if (val.cache.hasOwnProperty(passageString)) {
+        return of(loadNuggetTextSuccess({passage: val.cache[passageString], biblePassageCache: val.cache}));
+      } else {
+        return this.bibleService.getPassage(val.passage).pipe(
+          tap(psg => {
+            val.cache[passageString] = psg;
+            console.log(val.cache);
+          }),
+          map(psg =>
+            loadNuggetTextSuccess({passage: psg, biblePassageCache: val.cache})
+          ),
+          catchError(_err => EMPTY)
+        );
+      }
     })
   ));
 }

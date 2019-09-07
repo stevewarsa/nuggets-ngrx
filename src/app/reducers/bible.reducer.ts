@@ -19,7 +19,7 @@ export const bibleReducer = createReducer(
 );
 
 
-// export const biblePassageMapReducer = createReducer(
-//     initialState,
-//     on(loadNuggetTextSuccess, (state, action) => ({...state, nuggetIds: action.passage}))
-// );
+export const biblePassageMapReducer = createReducer(
+    initialState,
+    on(loadNuggetTextSuccess, (state, action) => ({...state, biblePassageMap: action.biblePassageCache}))
+);

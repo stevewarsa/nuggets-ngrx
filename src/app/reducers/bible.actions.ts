@@ -6,4 +6,4 @@ export const loadNuggetIdsSuccess = createAction('[Bible] Load Nugget IDs Succes
 export const loadNuggetText = createAction(
     '[Bible] Load Nugget Text Request', 
     (payload: Passage) => ({payload}));
-export const loadNuggetTextSuccess = createAction('[Bible] Load Nugget Text Success', props<{passage: Passage}>());
+export const loadNuggetTextSuccess = createAction('[Bible] Load Nugget Text Success', props<{passage: Passage, biblePassageCache: any}>());
