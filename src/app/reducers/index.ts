@@ -1,8 +1,6 @@
 import { BibleState, bibleReducer } from './bible.reducer';
 import {
-  ActionReducer,
   ActionReducerMap,
-  createFeatureSelector,
   createSelector,
   MetaReducer
 } from '@ngrx/store';
@@ -21,6 +19,11 @@ export const selectBible = (state: State) => state.bible;
 export const selectNuggetIds = createSelector(
   selectBible,
   (state: BibleState) => state.nuggetIds
+);
+ 
+export const selectBiblePassageMap = createSelector(
+  selectBible,
+  (state: BibleState) => state.biblePassageMap
 );
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

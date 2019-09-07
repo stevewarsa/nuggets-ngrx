@@ -46,7 +46,7 @@ import { BrowseBibleNuggetsComponent } from './browse-bible-nuggets/browse-bible
         strictStateImmutability: true,
         strictActionImmutability: true,
         strictStateSerializability: true,
-        strictActionSerializability: true
+        strictActionSerializability: false
       }
     }),
     EffectsModule.forRoot([AppEffects]),
