@@ -15,11 +15,12 @@ const initialState: BibleState = {
 
 export const bibleReducer = createReducer(
     initialState,
-    on(loadNuggetIdsSuccess, (state, action) => ({...state, nuggetIds: action.passagesById}))
-);
-
-
-export const biblePassageMapReducer = createReducer(
-    initialState,
-    on(loadNuggetTextSuccess, (state, action) => ({...state, biblePassageMap: action.biblePassageCache}))
+    on(loadNuggetIdsSuccess, (state, action) => ({...state, nuggetIds: action.passagesById})),
+    on(loadNuggetTextSuccess, (state, action) => { 
+        let passageMap = {...state.biblePassageMap};
+        passageMap[action.mapKey] = action.passage;
+        console.log("Here is the Bible Passage Map:");
+        console.log(passageMap);
+        return {...state, biblePassageMap: passageMap};
+    })
 );

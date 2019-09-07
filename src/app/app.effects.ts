@@ -37,16 +37,22 @@ export class AppEffects {
       let passageString: string = PassageUtils.getPassageStringNoIndex(val.passage);
       console.log(passageString);
       if (val.cache.hasOwnProperty(passageString)) {
-        return of(loadNuggetTextSuccess({passage: val.cache[passageString], biblePassageCache: val.cache}));
+        return of(loadNuggetTextSuccess({passage: val.cache[passageString], mapKey: passageString}));
       } else {
         return this.bibleService.getPassage(val.passage).pipe(
-          tap(psg => {
-            val.cache[passageString] = psg;
-            console.log(val.cache);
+          // tap(psg => {
+          //   val.cache[passageString] = psg;
+          //   console.log(val.cache);
+          // }),
+          map(psg => {
+            console.log("Returned from bibleService.getPassage (inside 'map') - here is the passage string: " + passageString + " and following is the passage returned:");
+            console.log(psg);
+            //val.cache[passageString] = psg;
+            console.log("Here is val (inside 'map'):");
+            console.log(val); 
+
+            return loadNuggetTextSuccess({passage: psg, mapKey: passageString});
           }),
-          map(psg =>
-            loadNuggetTextSuccess({passage: psg, biblePassageCache: val.cache})
-          ),
           catchError(_err => EMPTY)
         );
       }
