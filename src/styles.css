@@ -20,3 +20,8 @@ html, body {
 	font-size: 1.9em;
 	height: 100%;
 }
+
+.bible_version {
+	/* color: rgba(183, 0, 255, 0.219); */
+	color: darkblue
+}

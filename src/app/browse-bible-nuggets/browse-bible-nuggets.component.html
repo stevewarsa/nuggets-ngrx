@@ -1,16 +1,24 @@
 <mat-card *ngIf="nuggetIds && nuggetIds.length; else loading">
     <mat-card-header>
-        <div [innerHTML]="currentDisplayPassageString"></div>
+        <div class="nugget-view" [innerHTML]="currentDisplayPassageString"></div>
     </mat-card-header>
     <mat-card-actions>
-        <button mat-button (click)="showPrevNugget()">
-            <mat-icon>skip_previous</mat-icon>
-            Prev
-        </button>
-        <button mat-button (click)="showNextNugget()">
-            Next
-            <mat-icon>skip_next</mat-icon>
-        </button>
+        <mat-toolbar color="primary">
+            <mat-toolbar-row>
+                <button mat-button (click)="showPrevNugget()">
+                    <mat-icon>skip_previous</mat-icon>
+                </button>
+                <button mat-button (click)="showRandomNugget()">
+                    <mat-icon>shuffle</mat-icon>
+                </button>
+                <button mat-button (click)="showChapter()">
+                    <mat-icon>menu_book</mat-icon>
+                </button>
+                <button mat-button (click)="showNextNugget()">
+                    <mat-icon>skip_next</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
     </mat-card-actions>
     <mat-card-content class="nugget-view"
         *ngIf="currentFormattedPassageText; else loadingPsgTxt" 

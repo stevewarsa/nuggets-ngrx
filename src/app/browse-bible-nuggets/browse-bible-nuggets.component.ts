@@ -74,6 +74,15 @@ export class BrowseBibleNuggetsComponent implements OnInit {
     this.showNuggetText();
   }
 
+  showRandomNugget() {
+    this.currentNuggetIndex = Math.floor(Math.random() * (this.nuggetIds.length - 1));
+    this.showNuggetText();
+  }
+
+  showChapter() {
+    // TODO - need to find a way to show whole chapter
+  }
+
   private showNuggetText() {
     console.log('The current nugget index is ' + this.currentNuggetIndex + '. The current nugget id is: ' + this.nuggetIds[this.currentNuggetIndex]);
     let psg: Passage = this.passageKeysById[this.nuggetIds[this.currentNuggetIndex]];
