@@ -1,16 +1,27 @@
-<div *ngIf="nuggetIds && nuggetIds.length; else loading">
-    <button mat-button (click)="showPrevNugget()">
-        <mat-icon>skip_previous</mat-icon>
-        Prev
-    </button>
-    <button mat-button (click)="showNextNugget()">
-        Next
-        <mat-icon>skip_next</mat-icon>
-    </button>
-    <br>
-    ({{(currentNuggetIndex + 1)}} of {{nuggetIds.length}})<br>
-    Currently selected: {{nuggetIds[currentNuggetIndex]}}.
-</div>
+<mat-card *ngIf="nuggetIds && nuggetIds.length; else loading">
+    <mat-card-header>
+        <div [innerHTML]="currentDisplayPassageString"></div>
+    </mat-card-header>
+    <mat-card-actions>
+        <button mat-button (click)="showPrevNugget()">
+            <mat-icon>skip_previous</mat-icon>
+            Prev
+        </button>
+        <button mat-button (click)="showNextNugget()">
+            Next
+            <mat-icon>skip_next</mat-icon>
+        </button>
+    </mat-card-actions>
+    <mat-card-content class="nugget-view"
+        *ngIf="currentFormattedPassageText; else loadingPsgTxt" 
+        [innerHTML]="currentFormattedPassageText">
+    </mat-card-content>
+</mat-card>
 <ng-template #loading>
     <mat-spinner></mat-spinner>
 </ng-template>
+<ng-template #loadingPsgTxt>
+    <mat-spinner></mat-spinner>
+    Loading passage <div [innerHTML]="currentDisplayPassageString"></div> ...
+</ng-template>
+    

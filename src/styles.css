@@ -5,3 +5,18 @@ html, body {
     font-family: Clan,'Helvetica Neue',Helvetica,Arial,sans-serif !important;
     font-style: normal !important;
 }
+
+.wordsOfChrist {
+	color: #FF0000;
+}
+
+.verse_num {
+	font-weight: normal;
+	font-size: 0.75em;
+}
+.nugget-view {
+	font-weight: bold;
+	line-height: 1.25em;
+	font-size: 1.9em;
+	height: 100%;
+}

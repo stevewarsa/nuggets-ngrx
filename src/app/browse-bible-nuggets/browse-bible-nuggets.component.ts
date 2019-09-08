@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State, selectNuggetIds } from '../reducers';
+import { State, selectNuggetIds, selectBiblePassageMap } from '../reducers';
 import { loadNuggetIds, loadNuggetText } from '../reducers/bible.actions';
 import { Passage } from '../model/passage';
+import { PassageUtils } from '../model/passage-utils';
 
 @Component({
   templateUrl: './browse-bible-nuggets.component.html',
@@ -11,8 +12,13 @@ import { Passage } from '../model/passage';
 export class BrowseBibleNuggetsComponent implements OnInit {
   nuggetIds: string[] = [];
   passageKeysById: {[passageId: string]: Passage};
+  cachedBiblePassages: {[passageRef: string]: Passage} = {};
   // start with index = -1 so that when incremented first time, it will be zero
   currentNuggetIndex: number = -1;
+  currentPassageString: string = '';
+  currentDisplayPassageString: string = '';
+  currentPassage: Passage = null;
+  currentFormattedPassageText: string = null;
   defaultTranslation: string = 'niv';
 
   constructor(private store:Store<State>) { }
@@ -25,17 +31,27 @@ export class BrowseBibleNuggetsComponent implements OnInit {
     // use the selector to grab the nugget id list from the store
     this.store.select(selectNuggetIds).subscribe((iDs: {[passageId: string]: Passage}) => {
       if (iDs) {
-        // the following shuffles the array.  In need to use slice first because
-        // otherwise I'm modifying the order of the array in the store which
-        // is not allowed because of NgRx strict mode.  If I don't use slice, the 
-        // error message is:
-        //    TypeError: Cannot assign to read only property '0' of object '[object Array]'
-        //    at Array.sort (<anonymous>)...
+        // the following shuffles the passage IDs array of keys of this map.  
         this.nuggetIds = Object.keys(iDs).sort(() => Math.random() - 0.5);
         if (this.nuggetIds && this.nuggetIds.length) {
           this.passageKeysById = iDs;
           this.showNextNugget();
         }
+      }
+    });
+    this.store.select(selectBiblePassageMap).subscribe(psgMap => {
+      this.cachedBiblePassages = psgMap;
+      if (this.currentPassageString) {
+        if (this.cachedBiblePassages.hasOwnProperty(this.currentPassageString)) {
+          this.currentPassage = this.cachedBiblePassages[this.currentPassageString];
+          console.log('Found passage "' + this.currentPassageString + '" in cachedBiblePassages:');
+          console.log(this.currentPassage);
+          this.currentFormattedPassageText = PassageUtils.getFormattedPassageText(this.currentPassage, true);
+        } else {
+          console.log('Unable to find passage "' + this.currentPassageString + '" in cachedBiblePassages...');
+        }
+      } else {
+        console.log('No current passage string defined...');
       }
     });
   }
@@ -60,6 +76,11 @@ export class BrowseBibleNuggetsComponent implements OnInit {
 
   private showNuggetText() {
     console.log('The current nugget index is ' + this.currentNuggetIndex + '. The current nugget id is: ' + this.nuggetIds[this.currentNuggetIndex]);
-    this.store.dispatch(loadNuggetText(this.passageKeysById[this.nuggetIds[this.currentNuggetIndex]]));
+    let psg: Passage = this.passageKeysById[this.nuggetIds[this.currentNuggetIndex]];
+    this.currentPassageString = PassageUtils.getPassageStringNoIndex(psg);
+    this.currentDisplayPassageString = PassageUtils.getPassageString(psg, this.currentNuggetIndex, this.nuggetIds.length, this.defaultTranslation, false, true);
+    this.currentPassage = null;
+    this.currentFormattedPassageText = null;
+    this.store.dispatch(loadNuggetText(psg));
   }
 }

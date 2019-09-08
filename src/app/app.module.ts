@@ -14,6 +14,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { MatButtonModule } from  '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -33,6 +34,7 @@ import { BrowseBibleNuggetsComponent } from './browse-bible-nuggets/browse-bible
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    MatCardModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,

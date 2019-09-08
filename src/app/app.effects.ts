@@ -36,18 +36,15 @@ export class AppEffects {
     switchMap(val => {
       let passageString: string = PassageUtils.getPassageStringNoIndex(val.passage);
       console.log(passageString);
+      // First check to see if this cache already has this passage, if so, return it
+      // otherwise, need to call backend to get it (it will be cached in the reducer)
       if (val.cache.hasOwnProperty(passageString)) {
         return of(loadNuggetTextSuccess({passage: val.cache[passageString], mapKey: passageString}));
       } else {
         return this.bibleService.getPassage(val.passage).pipe(
-          // tap(psg => {
-          //   val.cache[passageString] = psg;
-          //   console.log(val.cache);
-          // }),
           map(psg => {
             console.log("Returned from bibleService.getPassage (inside 'map') - here is the passage string: " + passageString + " and following is the passage returned:");
             console.log(psg);
-            //val.cache[passageString] = psg;
             console.log("Here is val (inside 'map'):");
             console.log(val); 
 
