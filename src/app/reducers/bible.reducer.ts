@@ -1,16 +1,19 @@
-import { loadNuggetIdsSuccess, loadNuggetTextSuccess } from './bible.actions';
+import { loadNuggetIdsSuccess, loadNuggetTextSuccess, loadMaxVerseByChapterSuccess, loadMaxVerseByChapter } from './bible.actions';
 import { createReducer, on } from '@ngrx/store';
 import { Passage } from '../model/passage';
 
 export interface BibleState {
     nuggetIds: {[passageId: string]: Passage};
     // property that will contain bible verse text map
-    biblePassageMap: {[passageRef: string]: Passage}
+    biblePassageMap: {[passageRef: string]: Passage};
+    // the following contains each book and an array of arrays for each chapter containing the end verse
+    maxVerseByChapter: {[bookName: string]: any[]};
 }
 
 const initialState: BibleState = {
     nuggetIds: {},
-    biblePassageMap: {}
+    biblePassageMap: {},
+    maxVerseByChapter: {}
 };
 
 export const bibleReducer = createReducer(
@@ -22,5 +25,6 @@ export const bibleReducer = createReducer(
         console.log("Here is the Bible Passage Map:");
         console.log(passageMap);
         return {...state, biblePassageMap: passageMap};
-    })
+    }),
+    on(loadMaxVerseByChapterSuccess, (state, action) => ({...state, maxVerseByChapter: action.maxVerseByChapter})),
 );

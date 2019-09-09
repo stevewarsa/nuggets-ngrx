@@ -21,6 +21,11 @@ export const selectNuggetIds = createSelector(
   (state: BibleState) => state.nuggetIds
 );
  
+export const selectMaxVerseByChapter = createSelector(
+  selectBible,
+  (state: BibleState) => state.maxVerseByChapter
+);
+ 
 export const selectBiblePassageMap = createSelector(
   selectBible,
   (state: BibleState) => state.biblePassageMap

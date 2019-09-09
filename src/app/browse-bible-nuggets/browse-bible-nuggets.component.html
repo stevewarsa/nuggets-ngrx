@@ -3,7 +3,7 @@
         <div class="nugget-view" [innerHTML]="currentDisplayPassageString"></div>
     </mat-card-header>
     <mat-card-actions>
-        <mat-toolbar color="primary">
+        <mat-toolbar color="secondary">
             <mat-toolbar-row>
                 <button mat-button (click)="showPrevNugget()">
                     <mat-icon>skip_previous</mat-icon>
@@ -11,8 +11,11 @@
                 <button mat-button (click)="showRandomNugget()">
                     <mat-icon>shuffle</mat-icon>
                 </button>
-                <button mat-button (click)="showChapter()">
+                <button *ngIf="!showingChapter" mat-button (click)="showChapter()">
                     <mat-icon>menu_book</mat-icon>
+                </button>
+                <button *ngIf="showingChapter" mat-button (click)="backToPassage()">
+                    <mat-icon>undo</mat-icon>
                 </button>
                 <button mat-button (click)="showNextNugget()">
                     <mat-icon>skip_next</mat-icon>

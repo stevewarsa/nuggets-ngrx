@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State, selectNuggetIds, selectBiblePassageMap } from '../reducers';
-import { loadNuggetIds, loadNuggetText } from '../reducers/bible.actions';
+import { State, selectNuggetIds, selectBiblePassageMap, selectMaxVerseByChapter } from '../reducers';
+import { loadNuggetIds, loadNuggetText, loadMaxVerseByChapter } from '../reducers/bible.actions';
 import { Passage } from '../model/passage';
 import { PassageUtils } from '../model/passage-utils';
 
@@ -13,6 +13,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
   nuggetIds: string[] = [];
   passageKeysById: {[passageId: string]: Passage};
   cachedBiblePassages: {[passageRef: string]: Passage} = {};
+  maxVersesByChapter: {[bookName: string]: any[]} = {};
   // start with index = -1 so that when incremented first time, it will be zero
   currentNuggetIndex: number = -1;
   currentPassageString: string = '';
@@ -20,6 +21,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
   currentPassage: Passage = null;
   currentFormattedPassageText: string = null;
   defaultTranslation: string = 'niv';
+  showingChapter: boolean = false;
 
   constructor(private store:Store<State>) { }
 
@@ -28,6 +30,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
     // Note - the effect that catches this action will determine whether it needs to 
     // actually load the data via http from the server
     this.store.dispatch(loadNuggetIds({translation: this.defaultTranslation}));
+    this.store.dispatch(loadMaxVerseByChapter({translation: this.defaultTranslation}));
     // use the selector to grab the nugget id list from the store
     this.store.select(selectNuggetIds).subscribe((iDs: {[passageId: string]: Passage}) => {
       if (iDs) {
@@ -54,6 +57,13 @@ export class BrowseBibleNuggetsComponent implements OnInit {
         console.log('No current passage string defined...');
       }
     });
+    this.store.select(selectMaxVerseByChapter).subscribe(maxVerseMap => {
+      console.log('selectMaxVerseByChapter selector, here is the map:');
+      console.log(maxVerseMap);
+      if (maxVerseMap && Object.keys(maxVerseMap).length > 0) {
+        this.maxVersesByChapter = maxVerseMap;
+      }
+    });
   }
 
   showNextNugget() {
@@ -62,6 +72,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
     } else {
       this.currentNuggetIndex += 1;
     }
+    this.showingChapter = false;
     this.showNuggetText();
   }
 
@@ -71,16 +82,41 @@ export class BrowseBibleNuggetsComponent implements OnInit {
     } else {
       this.currentNuggetIndex -= 1;
     }
+    this.showingChapter = false;
     this.showNuggetText();
   }
 
   showRandomNugget() {
     this.currentNuggetIndex = Math.floor(Math.random() * (this.nuggetIds.length - 1));
+    this.showingChapter = false;
     this.showNuggetText();
   }
 
   showChapter() {
-    // TODO - need to find a way to show whole chapter
+    let maxVerse: number = this.getMaxVerseForChapter(
+      this.currentPassage.bookName, 
+      this.currentPassage.chapter);
+    let psg: Passage = {...this.currentPassage, 
+      startVerse: 1, 
+      endVerse: maxVerse
+    };
+    this.currentPassageString = PassageUtils.getPassageStringNoIndex(psg);
+    this.currentDisplayPassageString = PassageUtils.getPassageString(psg, this.currentNuggetIndex, this.nuggetIds.length, this.defaultTranslation, false, false);
+    this.showingChapter = true;
+    this.store.dispatch(loadNuggetText(psg));
+  }
+
+  private getMaxVerseForChapter(bookName: string, chapter: number): number {
+    let maxVersesForBook: any[] = this.maxVersesByChapter[bookName];
+    let maxVerseForChapterArray: number[] = maxVersesForBook
+      .filter((chap: number[]) => chap[0] === chapter);
+    let maxVerseForChapter: number = maxVerseForChapterArray[0][1];
+    return maxVerseForChapter;
+  }
+
+  backToPassage() {
+    this.showingChapter = false;
+    this.showNuggetText();
   }
 
   private showNuggetText() {
