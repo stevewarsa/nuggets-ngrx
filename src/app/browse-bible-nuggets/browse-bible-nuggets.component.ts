@@ -103,6 +103,8 @@ export class BrowseBibleNuggetsComponent implements OnInit {
     this.currentPassageString = PassageUtils.getPassageStringNoIndex(psg);
     this.currentDisplayPassageString = PassageUtils.getPassageString(psg, this.currentNuggetIndex, this.nuggetIds.length, this.defaultTranslation, false, false);
     this.showingChapter = true;
+    this.currentPassage = null;
+    this.currentFormattedPassageText = null;
     this.store.dispatch(loadNuggetText(psg));
   }
 
