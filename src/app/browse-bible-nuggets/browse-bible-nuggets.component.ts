@@ -22,10 +22,14 @@ export class BrowseBibleNuggetsComponent implements OnInit {
   currentFormattedPassageText: string = null;
   defaultTranslation: string = 'niv';
   showingChapter: boolean = false;
+  cardContentHeight: string = null;
 
   constructor(private store:Store<State>) { }
 
   ngOnInit() {
+    let cardHeaderSize = 76;
+    let cardToolbarSize = 72;
+    this.cardContentHeight = (window.screen.height - cardHeaderSize - cardToolbarSize - 105) + '';
     // every time this component loads, dispatch an action to load the nugget id list
     // Note - the effect that catches this action will determine whether it needs to 
     // actually load the data via http from the server
@@ -101,7 +105,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
       endVerse: maxVerse
     };
     this.currentPassageString = PassageUtils.getPassageStringNoIndex(psg);
-    this.currentDisplayPassageString = PassageUtils.getPassageString(psg, this.currentNuggetIndex, this.nuggetIds.length, this.defaultTranslation, false, false);
+    this.currentDisplayPassageString = PassageUtils.getPassageString(psg, this.currentNuggetIndex, this.nuggetIds.length, this.defaultTranslation, true, false);
     this.showingChapter = true;
     this.currentPassage = null;
     this.currentFormattedPassageText = null;
@@ -125,7 +129,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
     console.log('The current nugget index is ' + this.currentNuggetIndex + '. The current nugget id is: ' + this.nuggetIds[this.currentNuggetIndex]);
     let psg: Passage = this.passageKeysById[this.nuggetIds[this.currentNuggetIndex]];
     this.currentPassageString = PassageUtils.getPassageStringNoIndex(psg);
-    this.currentDisplayPassageString = PassageUtils.getPassageString(psg, this.currentNuggetIndex, this.nuggetIds.length, this.defaultTranslation, false, true);
+    this.currentDisplayPassageString = PassageUtils.getPassageString(psg, this.currentNuggetIndex, this.nuggetIds.length, this.defaultTranslation, true, true);
     this.currentPassage = null;
     this.currentFormattedPassageText = null;
     this.store.dispatch(loadNuggetText(psg));

@@ -18,10 +18,14 @@ html, body {
 	font-weight: bold;
 	line-height: 1.25em;
 	font-size: 1.9em;
-	height: 100%;
+	/* height: 100%; */
 }
 
 .bible_version {
 	/* color: rgba(183, 0, 255, 0.219); */
 	color: darkblue
+}
+
+.scrollable-card-content {
+  	overflow: auto;
 }
