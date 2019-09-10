@@ -28,4 +28,5 @@ html, body {
 
 .scrollable-card-content {
   	overflow: auto;
+    height: calc(100% - 77px);
 }
