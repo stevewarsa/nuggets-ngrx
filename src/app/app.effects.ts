@@ -1,9 +1,10 @@
+import { selectMaxChapterByBook } from './reducers/index';
 import { PassageUtils } from './model/passage-utils';
 import { Constants } from './model/constants';
 import { BibleService } from './services/bible.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { loadNuggetIds, loadNuggetIdsSuccess, loadNuggetText, loadNuggetTextSuccess, loadMaxVerseByChapter, loadMaxVerseByChapterSuccess } from './reducers/bible.actions';
+import { loadNuggetIds, loadNuggetIdsSuccess, loadNuggetText, loadNuggetTextSuccess, loadMaxVerseByChapter, loadMaxVerseByChapterSuccess, loadMaxChapterByBook, loadMaxChapterByBookSuccess } from './reducers/bible.actions';
 import { switchMap, map, withLatestFrom, filter, tap, catchError } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { State, selectNuggetIds, selectBiblePassageMap, selectMaxVerseByChapter } from './reducers';
@@ -36,6 +37,15 @@ export class AppEffects {
     map(([action, other]) => action.translation),
     switchMap(translation => this.bibleService.getMaxVerseByChapter(translation)),
     map(maxVerses => loadMaxVerseByChapterSuccess({maxVerseByChapter: maxVerses}))
+  ));
+
+  getMaxChapterByBook = createEffect(() => this.actions$.pipe(
+    ofType(loadMaxChapterByBook),
+    withLatestFrom(this.store.select(selectMaxChapterByBook)),
+    filter(([action, maxChapterByBook]) => maxChapterByBook.length === 0),
+    tap(val => console.log(val)),
+    switchMap(() => this.bibleService.getMaxChapterByBook()),
+    map(maxChapters => loadMaxChapterByBookSuccess({maxChapterByBook: maxChapters}))
   ));
 
   getBibleNuggetText = createEffect(() => this.actions$.pipe(

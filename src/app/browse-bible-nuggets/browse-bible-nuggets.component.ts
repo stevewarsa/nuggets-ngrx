@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State, selectNuggetIds, selectBiblePassageMap, selectMaxVerseByChapter } from '../reducers';
-import { loadNuggetIds, loadNuggetText, loadMaxVerseByChapter } from '../reducers/bible.actions';
+import { State, selectNuggetIds, selectBiblePassageMap, selectMaxVerseByChapter, selectMaxChapterByBook } from '../reducers';
+import { loadNuggetIds, loadNuggetText, loadMaxVerseByChapter, loadMaxChapterByBook } from '../reducers/bible.actions';
 import { Passage } from '../model/passage';
 import { PassageUtils } from '../model/passage-utils';
 
@@ -14,6 +14,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
   passageKeysById: {[passageId: string]: Passage};
   cachedBiblePassages: {[passageRef: string]: Passage} = {};
   maxVersesByChapter: {[bookName: string]: any[]} = {};
+  maxChapterByBook: {[bookName: string]: number} = {};
   // start with index = -1 so that when incremented first time, it will be zero
   currentNuggetIndex: number = -1;
   currentPassageString: string = '';
@@ -27,14 +28,21 @@ export class BrowseBibleNuggetsComponent implements OnInit {
   constructor(private store:Store<State>) { }
 
   ngOnInit() {
-    let cardHeaderSize = 76;
-    let cardToolbarSize = 72;
-    this.cardContentHeight = (window.screen.height - cardHeaderSize - cardToolbarSize - 105) + '';
+    let adjustment;
+    if (window.screen.width > 500) { // 768px portrait
+      // this is desktop
+      adjustment = 270;
+    } else {
+      adjustment = 253;
+    }
+    console.log("Here is the window.innerHeight: " + window.innerHeight);
+    this.cardContentHeight = (window.innerHeight - adjustment) + '';
     // every time this component loads, dispatch an action to load the nugget id list
     // Note - the effect that catches this action will determine whether it needs to 
     // actually load the data via http from the server
     this.store.dispatch(loadNuggetIds({translation: this.defaultTranslation}));
     this.store.dispatch(loadMaxVerseByChapter({translation: this.defaultTranslation}));
+    this.store.dispatch(loadMaxChapterByBook());
     // use the selector to grab the nugget id list from the store
     this.store.select(selectNuggetIds).subscribe((iDs: {[passageId: string]: Passage}) => {
       if (iDs) {
@@ -66,6 +74,13 @@ export class BrowseBibleNuggetsComponent implements OnInit {
       console.log(maxVerseMap);
       if (maxVerseMap && Object.keys(maxVerseMap).length > 0) {
         this.maxVersesByChapter = maxVerseMap;
+      }
+    });
+    this.store.select(selectMaxChapterByBook).subscribe(maxChapterArray => {
+      console.log('selectMaxChapterByBook selector, here is the array:');
+      console.log(maxChapterArray);
+      if (maxChapterArray && maxChapterArray.length > 0) {
+        maxChapterArray.forEach(maxChap => this.maxChapterByBook[maxChap.bookName] = maxChap);
       }
     });
   }

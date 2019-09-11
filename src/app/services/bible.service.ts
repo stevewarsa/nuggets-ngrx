@@ -25,4 +25,9 @@ export class BibleService {
     console.log('BibleService.getMaxVerseByChapter - calling ' + this._url + 'get_max_verse_by_book_chapter.php?translation=' + translation);
     return this.httpService.get<{[bookName: string]: any[]}>(this._url + 'get_max_verse_by_book_chapter.php?translation=' + translation);
   }
+  
+  public getMaxChapterByBook(): Observable<any[]> {
+    console.log('BibleService.getMaxChapterByBook - calling ' + this._url + 'get_max_chapter_by_book.php');
+    return this.httpService.get<any[]>(this._url + 'get_max_chapter_by_book.php');
+  }
 }

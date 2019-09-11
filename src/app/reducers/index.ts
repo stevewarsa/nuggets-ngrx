@@ -26,6 +26,11 @@ export const selectMaxVerseByChapter = createSelector(
   (state: BibleState) => state.maxVerseByChapter
 );
  
+export const selectMaxChapterByBook = createSelector(
+  selectBible,
+  (state: BibleState) => state.maxChapterByBook
+);
+ 
 export const selectBiblePassageMap = createSelector(
   selectBible,
   (state: BibleState) => state.biblePassageMap

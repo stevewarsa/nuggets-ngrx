@@ -8,7 +8,7 @@
                 <button mat-button (click)="showPrevNugget()">
                     <mat-icon>skip_previous</mat-icon>
                 </button>
-                <button mat-button (click)="showRandomNugget()">
+                <button *ngIf="!showingChapter" mat-button (click)="showRandomNugget()">
                     <mat-icon>shuffle</mat-icon>
                 </button>
                 <button *ngIf="!showingChapter" mat-button (click)="showChapter()">
@@ -23,7 +23,7 @@
             </mat-toolbar-row>
         </mat-toolbar>
     </mat-card-actions>
-    <mat-card-content class="nugget-view scrollable-card-content"
+    <mat-card-content [style.height.px]="cardContentHeight" class="nugget-view scrollable-card-content"
         *ngIf="currentFormattedPassageText; else loadingPsgTxt" 
         [innerHTML]="currentFormattedPassageText">
     </mat-card-content>
