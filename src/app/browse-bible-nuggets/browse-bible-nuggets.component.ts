@@ -80,7 +80,7 @@ export class BrowseBibleNuggetsComponent implements OnInit {
       console.log('selectMaxChapterByBook selector, here is the array:');
       console.log(maxChapterArray);
       if (maxChapterArray && maxChapterArray.length > 0) {
-        maxChapterArray.forEach(maxChap => this.maxChapterByBook[maxChap.bookName] = maxChap);
+        maxChapterArray.forEach(maxChap => this.maxChapterByBook[maxChap.bookName] = maxChap.maxChapter);
       }
     });
   }
