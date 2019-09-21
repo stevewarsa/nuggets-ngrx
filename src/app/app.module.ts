@@ -1,5 +1,5 @@
 import { BibleService } from './services/bible.service';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
@@ -22,6 +22,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { BrowseBibleNuggetsComponent } from './browse-bible-nuggets/browse-bible-nuggets.component';
+
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = <any>{
+    'pinch': { enable: false },
+    'rotate': { enable: false }
+  }
+
+  // dynamically turn off user select blocking for Desktop
+  options = window.screen.width > 500 ? <any>{
+    cssProps: { userSelect: false }
+  } : {};
+}
 
 @NgModule({
   declarations: [
@@ -54,7 +66,11 @@ import { BrowseBibleNuggetsComponent } from './browse-bible-nuggets/browse-bible
     EffectsModule.forRoot([AppEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  providers: [BibleService],
+  providers: [BibleService,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

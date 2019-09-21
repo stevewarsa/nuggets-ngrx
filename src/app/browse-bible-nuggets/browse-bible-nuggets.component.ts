@@ -24,6 +24,8 @@ export class BrowseBibleNuggetsComponent implements OnInit {
   defaultTranslation: string = 'niv';
   showingChapter: boolean = false;
   cardContentHeight: string = null;
+  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
+  direction: string = null;
 
   constructor(private store:Store<State>) { }
 
@@ -83,6 +85,25 @@ export class BrowseBibleNuggetsComponent implements OnInit {
         maxChapterArray.forEach(maxChap => this.maxChapterByBook[maxChap.bookName] = maxChap.maxChapter);
       }
     });
+  }
+
+  swipe(action) {
+    if (window.screen.width > 500) { // 768px portrait
+      // this is Desktop, so don't allow swipe
+      console.log("Not allowing swipe");
+      return;
+    }
+    if (action === this.SWIPE_ACTION.RIGHT) {
+      // this is a hack to make sure that setter gets called in the passage navigation component
+      this.direction = 'prev' + new Date();
+      this.showPrevNugget();
+    }
+
+    if (action === this.SWIPE_ACTION.LEFT) {
+      // this is a hack to make sure that setter gets called in the passage navigation component
+      this.direction = 'next' + new Date();
+      this.showNextNugget();
+    }
   }
 
   showNextNugget() {

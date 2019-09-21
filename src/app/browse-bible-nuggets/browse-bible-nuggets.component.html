@@ -25,7 +25,7 @@
     </mat-card-actions>
     <mat-card-content [style.height.px]="cardContentHeight" class="nugget-view scrollable-card-content"
         *ngIf="currentFormattedPassageText; else loadingPsgTxt" 
-        [innerHTML]="currentFormattedPassageText">
+        [innerHTML]="currentFormattedPassageText" (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)">
     </mat-card-content>
 </mat-card>
 <ng-template #loading>
