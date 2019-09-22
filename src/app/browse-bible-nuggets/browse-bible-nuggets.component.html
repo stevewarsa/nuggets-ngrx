@@ -23,9 +23,13 @@
             </mat-toolbar-row>
         </mat-toolbar>
     </mat-card-actions>
-    <mat-card-content [style.height.px]="cardContentHeight" class="nugget-view scrollable-card-content"
+    <mat-card-content 
+        [style.height.px]="cardContentHeight" 
+        class="nugget-view scrollable-card-content"
         *ngIf="currentFormattedPassageText; else loadingPsgTxt" 
-        [innerHTML]="currentFormattedPassageText" (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)">
+        [innerHTML]="currentFormattedPassageText" 
+        (swipeleft)="swipe($event.type)" 
+        (swiperight)="swipe($event.type)">
     </mat-card-content>
 </mat-card>
 <ng-template #loading>
@@ -33,6 +37,6 @@
 </ng-template>
 <ng-template #loadingPsgTxt>
     <mat-spinner></mat-spinner>
-    Loading passage <div [innerHTML]="currentDisplayPassageString"></div> ...
+    Loading passage <span [innerHTML]="currentDisplayPassageString"></span> ...
 </ng-template>
     

@@ -22,6 +22,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { BrowseBibleNuggetsComponent } from './browse-bible-nuggets/browse-bible-nuggets.component';
+import { BrowseQuotesComponent } from './browse-quotes/browse-quotes.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -39,7 +40,8 @@ export class MyHammerConfig extends HammerGestureConfig {
   declarations: [
     AppComponent,
     WelcomeComponent,
-    BrowseBibleNuggetsComponent
+    BrowseBibleNuggetsComponent,
+    BrowseQuotesComponent
   ],
   imports: [
     BrowserModule,
