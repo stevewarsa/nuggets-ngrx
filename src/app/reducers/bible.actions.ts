@@ -11,3 +11,4 @@ export const loadNuggetText = createAction(
     '[Bible] Load Nugget Text Request', 
     (payload: Passage) => ({payload}));
 export const loadNuggetTextSuccess = createAction('[Bible] Load Nugget Text Success', props<{passage: Passage, mapKey: string}>());
+export const loadQuoteIds = createAction('[Bible] Load Quote IDs Request', props<{user: string}>());

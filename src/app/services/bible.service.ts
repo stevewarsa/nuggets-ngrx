@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Passage } from '../model/passage';
+import { Quote } from '../model/quote';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,11 @@ export class BibleService {
   public getPassagesById(translation: string): Observable<{[passageId: string]: Passage}> {
     console.log('BibleService.getPassagesById - calling ' + this._url + 'get_passage_id_list.php?translation=' + translation);
     return this.httpService.get<{[passageId: string]: Passage}>(this._url + 'get_passage_id_list.php?translation=' + translation);
+  }
+
+  public getQuoteIdList(userId: string): Observable<Quote[]> {
+    console.log('BibleService.getQuoteIdList - calling ' + this._url + 'get_quote_id_list.php?user=' + userId);
+    return this.httpService.get<Quote[]>(this._url + 'get_quote_id_list.php?user=' + userId);
   }
 
   public getPassage(passage: Passage): Observable<Passage> {
